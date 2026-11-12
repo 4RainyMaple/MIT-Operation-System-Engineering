@@ -15,7 +15,7 @@ Ctrl + p     # 打印当前进程信息
 
 ## sleep
 
-先阅读了[xv6 book](../../xv6%20book.md)第一章，然后完成了sleep.c
+先阅读了[xv6 book](../../xv6%20book.md)第一章，然后完成了[sleep.c](../code/sleep.c)
 
 在 Makefile 中注册sleep：  
 在 Makefile 中找到 `UPROGS=\` 这一段，在 `$U/_sh\` 后面加一行：$U/\_sleep\
