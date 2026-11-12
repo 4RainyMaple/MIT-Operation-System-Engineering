@@ -14,3 +14,21 @@ Ctrl + p     # 打印当前进程信息
 ```
 
 ## sleep
+
+先阅读了[xv6 book](../../xv6%20book.md)第一章，然后完成了sleep.c
+
+在 Makefile 中注册sleep：  
+在 Makefile 中找到 `UPROGS=\` 这一段，在 `$U/_sh\` 后面加一行：$U/\_sleep\
+
+运行 util lab 的自动评分脚本
+
+```bash
+./grade-lab-util sleep   # 看到 OK 就通过
+```
+
+用 git 提交
+
+```bash
+git add user/sleep.c Makefile
+git commit -m "util: sleep"
+```
