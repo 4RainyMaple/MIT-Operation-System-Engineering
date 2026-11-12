@@ -15,7 +15,8 @@ xv6 进程由用户空间内存以及内核进程状态组成。xv6采用**分�
 
 ```c
 int fork();   
-// 创建子进程，返回子进程的PID，将父进程的内存复制到子进程。
+/* 父进程调用该函数后创建子进程，将父进程的内存复制到子进程。
+   如果是父进程则返回子进程的pid，如果是子进程则返回0 */
 
 int exit(int status);   
 /* 终止当前进程，status 是当前进程的结果码
@@ -27,5 +28,59 @@ int wait(int *status);
    
 int exec(char *file, char *argv[]);
 /*把一个程序装进当前进程，内存修改， PID 不变
-  第一个参数是文件的路径；第二个参数是一个字符数组，包括名称，参数，最后一个元素是0*/
+  第一个参数是文件的路径；
+  第二个参数是一个字符数组，包括文件名称，所需参数，最后一个元素是0*/
+```
+
+### 1.2 I/O 与文件描述符
+
+文件描述符 fd 是内核给每个文件的一个编号。  
+每个进程都有一张打开文件表，`fd` 就是这张表的下标：
+
+```
+fd:      0        1        2        3        4
+表项:  [stdin] [stdout] [stderr]  [a.txt]   [空]
+                                   ↑
+                             fd = 3 指向这里
+```
+
+```c
+int read(int fd, void * buf, int n);
+// fd 为文件描述符，buf 为某个地址，n 表示读入的字节数
+// > 0：读到字节数；0：读到文件末尾；-1：出错
+
+int write(int fd, void * buf, int n);   // 同上
+
+int close(int fd);    // 关闭一个文件描述符并释放其表项，0表示成功，-1表示失败
+
+int open(const char *path, int omode);   // 成功返回 fd，失败返回-1
+/* `O_RDONLY`：只读     `O_WRONLY`：只写     `O_RDWR`：读写
+   `O_CREATE`：不存在就创建     `O_TRUNC`：打开时清空 */
+   
+int dup(int fd);   // 返回一个新的 fd，与传入的 fd 指向同一文件，共享文件偏移量
+```
+
+### 1.3 管道
+
+管道是内核缓冲区，在两个进程之间传递字节流。
+
+**shell 的运行流程**
+
+getcmd 读一行命令    $`\to`$ fork创建子进程    $`\to`$ 父进程 wait  
+$`\to`$ 子进程 runcmd + exec $`\to`$ 子进程变成目标程序 $`\to`$ 目标程序 exit  
+$`\to`$ 父进程从 wait 返回
+
+### 1.4 文件系统
+
+准确解释一下几个常见的概念：
+
+- 文件：inode，保存类型、大小、数据块位置、链接数等元数据
+- 目录：一种特殊的文件，内容是目录项
+- 目录项：文件名字到 inode 的映射，这种关系叫做link
+- 路径：一条路线
+
+```c
+int link(const char *old, const char *new);
+int unlink(const char *path);
+// 成功返回0，失败返回-1
 ```
