@@ -27,7 +27,7 @@ Ctrl + p     # 打印当前进程信息
 
 **接口功能：**
 
-休眠指定时间
+休眠指定时间。
 
 **实验步骤：**
 
@@ -76,6 +76,6 @@ git commit -m "util: sleep"
 - 用 git 提交
 
 ```bash
-git add user/sleep.c Makefile
+git add user/sixfive.c Makefile
 git commit -m "util: sixfive"
 ```
