@@ -34,7 +34,7 @@ Ctrl + p     # 打印当前进程信息
 - 先阅读了[xv6 book](../xv6%20book.md)第一章，然后完成了 [sleep.c](../code/DAY%201/sleep.c)
 
 - 在 Makefile 中注册sleep：  
-  在 Makefile 中找到 `UPROGS=\` 这一段，在 `$U/_sh\` 后面加一行：`$U/\_sleep\`
+  在 Makefile 中找到 `UPROGS=\` 这一段，在 `$U/_sh\` 后面加一行：`$U/_sleep\`
 
 - 运行 util lab 的自动评分脚本
 
@@ -58,7 +58,7 @@ git commit -m "util: sleep"
 **实验步骤：**
 
 - 注册  
-  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/\_sixfive\`
+  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/_sixfive\`
 
 - 完成 [sixfive.c](../code/DAY%201/sixfive.c)  
   我卡住的地方：
@@ -98,7 +98,7 @@ git commit -m "util: sixfive"
 **实验步骤：**
 
 - 注册：  
-  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/\_memdump\`
+  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/_memdump\`
 
 - 完成 [memdump.c](../code/DAY%201/memdump.c)  
   我卡住的地方：
