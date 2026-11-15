@@ -79,3 +79,42 @@ git commit -m "util: sleep"
 git add user/sixfive.c Makefile
 git commit -m "util: sixfive"
 ```
+
+## memdump
+
+**接口功能：**
+
+根据不同的格式字符串 fmt 打印给定字符串。
+
+| 格式字符 | 读入字节数 | 输出        |
+| ---- | ----- | --------- |
+| i    | 4     | 32位十进制整数  |
+| p    | 8     | 64位16进制整数 |
+| h    | 2     | 16位十进制整数  |
+| c    | 1     | 一个字符      |
+| s    | 8     | 该地址的内容    |
+| S    | 剩余全部  | 剩余全部      |
+
+**实验步骤：**
+
+- 注册：  
+  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/\_memdump\`
+
+- 完成 [memdump.c](../code/DAY%201/memdump.c)  
+  我卡住的地方：
+
+  - 一开始对实验目的都还不是很清晰，第一次接触 memcpy 函数，对其功能和用法还很不熟悉。
+  - 处理 s 的情况，被指针，内存和变量类型这些卡住了很久，最后还是在 AI 的帮助下才能理解。
+
+- 评测
+
+```bash
+./grade-lab-util memdump
+```
+
+- 提交
+
+```bash
+git add user/sixfive.c Makefile
+git commit -m "util: memdump"
+```
