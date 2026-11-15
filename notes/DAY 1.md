@@ -115,6 +115,6 @@ git commit -m "util: sixfive"
 - 提交
 
 ```bash
-git add user/sixfive.c Makefile
+git add user/memdump.c Makefile
 git commit -m "util: memdump"
 ```
