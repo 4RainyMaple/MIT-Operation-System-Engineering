@@ -14,5 +14,5 @@ Lab 分为三个难度，按照官方的说法：
 - Moderate: 1-2 hours.  
 - Hard: More than 2 hours. Often these exercises don't require much code, but the code is tricky to get right.
 
-但实际上，在我刚上手这门课程时，完成一项 Easy 难度的实验耗时就已经超过一小时，让我感觉有些吃力了。完成一项 Moderate 难度的实验耗时达到 3 小时，做完真感觉筋疲力尽了。
-虽然做的过程比较煎熬，但是很充实，做完后梳理实验流程时也能体会到实打实的收获。  
+但实际上，在我刚上手这门课程时，完成一项 Easy 难度的实验耗时就已经超过一小时，让我感觉有些吃力了。完成一项 Moderate 难度的实验耗时达到 3 小时，做完真感觉筋疲力尽了，
+但多做几个情况就好不少。虽然做的过程比较煎熬，但是很充实，做完后梳理实验流程时也能体会到实打实的收获。  
