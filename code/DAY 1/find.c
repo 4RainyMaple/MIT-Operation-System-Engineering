@@ -3,8 +3,38 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 #include "kernel/fcntl.h"
+#include "kernel/param.h"
 
-void find(char * path, char * name)
+void run_exec(char * path, char * cmd[])
+{
+    int fd = fork();
+    if ( fd < 0 )
+    {
+        fprintf(2, "fork: error\n");
+        exit(1);
+    }
+    else if ( fd == 0 )
+    {
+        char * argv[MAXARG];
+        int i = 0;
+        while ( cmd[i] != 0 )
+        {
+            // 注意这里不要用 strcpy，因为这是指针数组，直接赋值即可
+            // 拼路径是赋值字符，这里只是排列指针
+            argv[i] = cmd[i];   
+            i++;
+        }
+        argv[i++] = path;
+        argv[i] = 0;
+        exec(cmd[0], argv);
+        fprintf(2, "exec: %s failed\n", cmd[0]);
+        exit(1);
+    }
+    else
+        wait(0);
+}
+
+void find(char * path, char * name, char * cmd[])
 {
     int fd = open(path, O_RDONLY);
     struct stat st;     // 文件信息
@@ -32,7 +62,13 @@ void find(char * path, char * name)
             filename = p + 1;
 
     if ( strcmp(filename, name) == 0 )
-        printf("%s\n", path);
+    {
+        if ( cmd == 0 )
+            printf("%s\n", path);
+        else
+            run_exec(path, cmd);
+    }
+        
     
     // 如果是目录的话就递归
     if (st.type == T_DIR)
@@ -48,19 +84,21 @@ void find(char * path, char * name)
             int n = strlen(child);
             child[n] = '/';
             strcpy(child + n + 1, de.name);     // 从下标 n + 1 开始把 de.name 拷贝给 child
-            find(child, name);
+            find(child, name, cmd);
         }
     close(fd);
 }
 
 int main(int argc, char * argv[])
 {
-    if ( argc != 3 )
+    if ( argc == 3 )
+        find(argv[1], argv[2], 0);
+    else if ( argc >= 5 && strcmp(argv[3], "-exec") == 0 )
+        find(argv[1], argv[2], argv + 4);
+    else
     {
-        fprintf(2, "usage: find path name\n");
+        fprintf(2, "usage: find path name [-exec cmd...]\n");
         exit(1);
     }
-
-    find(argv[1], argv[2]);
     exit(0);
 }
