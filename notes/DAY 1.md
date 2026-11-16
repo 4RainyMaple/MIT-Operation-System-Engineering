@@ -118,3 +118,74 @@ git commit -m "util: sixfive"
 git add user/memdump.c Makefile
 git commit -m "util: memdump"
 ```
+
+## find
+
+**接口功能：**
+
+```bash
+find path name   # 从 path 出发打印所有叫作 name 的文件或目录的路径
+```
+
+**前置知识：**
+
+文件信息的结构体：
+
+```c
+struct stat {
+  int dev;      // 设备号
+  uint ino;     // inode 编号
+  short type;   // 文件类型
+  short nlink;  // 链接数
+  uint64 size;  // 字节大小
+};
+
+// 内核根据 fd 将信息填入 st
+int fstat(int fd, struct stat *st);
+```
+
+其中 type 的值有：  
+T_DIR     目录  
+T_FILE    普通文件  
+T_DEVICE  设备文件
+
+目录项的结构体：
+
+```c
+struct dirent {
+  ushort inum;       // inode 编号
+  char name[DIRSIZ]; // 文件名
+};
+```
+
+c的字符串操作比较原始
+
+```c
+strcmp(char * s1, char * s2);  // s1 - s2
+strcpy(char * s1, char * s2);  // 将 s2 拷贝给 s1
+```
+
+**实验步骤：**
+
+- 注册  
+  在 `Makefile` 中 `UPROGRS=\` 部分添加 `$U/_find\`
+
+- 完成 [find.c](../code/DAY%201/find.c)  
+  我卡住的地方：
+
+  - stat 和 dirent 这两个结构体还没接触过，理解其含义花了一些时间。
+  - 取出当前路径的文件名不太会操作，这个直接让 AI 教我了。
+  - 拼接当前路径和目录的名称没思路，也是让 AI 教我。
+
+- 评测
+
+```bash
+./grade-lab-util find
+```
+
+- 提交
+
+```bash
+git add ../Makefile find.c
+git commit -m "util: find"
+```
