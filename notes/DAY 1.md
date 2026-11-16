@@ -200,7 +200,7 @@ find path name -exec cmd...   # 将路径当做最后一个参数传入
 
 **实验步骤：**
 
-- 修改 find.c  
+- 修改 [find.c](../code/DAY%201/find.c)   
   修改的地方：
 
   - find 传入参数添加 cmd，普通情况下 cmd = 0。
