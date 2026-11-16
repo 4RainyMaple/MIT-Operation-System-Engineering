@@ -189,3 +189,42 @@ strcpy(char * s1, char * s2);  // 将 s2 拷贝给 s1
 git add ../Makefile find.c
 git commit -m "util: find"
 ```
+
+## find with exec
+
+**接口功能：**
+
+```bash
+find path name -exec cmd...   # 将路径当做最后一个参数传入
+```
+
+**实验步骤：**
+
+- 修改 find.c  
+  修改的地方：
+
+  - find 传入参数添加 cmd，普通情况下 cmd = 0。
+  - 判断路径的文件名称是否符合时，根据 cmd 的值判断后面走哪条路。
+
+  我卡住的地方：
+
+  - 给 exec 函数重新构建传入数组时，数组指针不需要也不能使用strcpy，直接赋值即可。
+  - exec 里的子进程完成后会直接退出，所以需要补一个失败提示。
+
+- 测评
+
+```bash
+./grade-lab-util exec
+```
+
+- 提交
+
+```bash
+git add user/find.c
+git commit -m "util: find with -exec"
+```
+
+## 总结
+
+作为第一个lab，对我来说难度是不低的。刚开始使用xv6感觉一头雾水，看xv6 book也很茫然。所以完成第一个接口`sleep`的时候我都感觉很艰难，一些命令基本都是死记硬背，做`sixfive`的时候更是感觉人都要麻了。其实主要原因是我没有利用好一些现成的函数，以及有一段时间没有写过C了，所以写起来很艰难。但写到后面三个任务就感觉好一些了，命令和代码都熟练了一些。  
+对于不会写的代码，基本都是让 AI 提供思路，然后我再反复测试，修正我的代码，只有实在是不会写的才让 AI 写一部分。
