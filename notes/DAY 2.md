@@ -1,4 +1,4 @@
-本次课程内容为C语言拓展。
+本次课程内容为C语言拓展，难度不大。
 
 ## 位运算
 
@@ -35,4 +35,32 @@ unsigned int invert(unsigned int x, int p, int n);
 ```c
 // 把 x 从第 p 位开始的 n 位取反
 unsigned int invert(unsigned int x, int p, int n);
+```
+
+## 指针
+
+**字符串函数** [str.c](../code/DAY%202/str.c)
+
+```c
+int mystrlen(char * s);
+int mystrcmp(char * s1, char * s2);
+void mystrcpy(char * dst, const char * src);
+void mystrcat(char * dst, const char * src);
+```
+
+**复制函数** [memcpy.c](../code/DAY%202/memcpy.c)
+
+```c
+void * mymemcpy(void * dst, const void * src, int n);
+void * mymemmove(void * dst, const void * src, int n);
+```
+
+**结构体指针** [node.c](../code/DAY%202/node.c)
+
+```c
+struct node *push_front(struct node *head, int pid, char *name);
+struct node *find(struct node *head, int pid);
+struct node *remove_node(struct node *head, int pid);
+void print_list(struct node *head);
+void free_list(struct node *head);
 ```
