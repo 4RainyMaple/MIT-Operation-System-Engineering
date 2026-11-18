@@ -1,4 +1,4 @@
-// 位运算练习代码
+// 位运算练习
 
 // 把 y 的最低 n 位放到 x 的 p 到 p - n + 1 位
 unsigned int setbits(unsigned int x, int p, int n, unsigned int y)
