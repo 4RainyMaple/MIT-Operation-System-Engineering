@@ -191,7 +191,7 @@ argstr(0, path, MAXPATH);
 
 if (num > 0 && num < 64 && (p->syscall_mask & (1ULL << num)))
 {
-   if (!((num == SYS_exec || num == SYS_open) && (strncmp(path, p-                  >allowed_path, sizeof(p->allowed_path)) == 0)))
+   if (!((num == SYS_exec || num == SYS_open) && (strncmp(path, p->allowed_path, sizeof(p->allowed_path)) == 0)))
    {
      p->trapframe->a0 = -1;
      return;
