@@ -60,6 +60,12 @@ $U/_sandbox\
 $U/_sbtest\
 ```
 
+- 给 `struct proc` 添加新成员
+
+```c
+uint64 syscall_mask;
+```
+
 - 把 mask 存进当前进程  
 在 kernel/sysproc.c 中添加 sys_interpose 函数
 
@@ -106,7 +112,7 @@ p->syscall_mask = 0;
 - 评测
 
 ```bash
-./grade-lab-util sandbox_mask
+./grade-lab-syscall sandbox_mask
 ```
 
 - 提交
@@ -124,6 +130,8 @@ sandbox 32768 - cat README  # 输入
 cat: cannot open README     # 输出
 ```
 
+这里用户输入 2 的幂是为了方便用位图，单参数输入多个想要禁用的系统调用。
+
 - 用户调用 `sandbox` 在 `user/sandbox.c` 中实现
 - `user/sandbox.c` 中调用 `interpose(32768, "-")` 函数
 - `interpose` 函数在 `user/user.h` 中声明:
@@ -136,3 +144,69 @@ interpose(int mask, char * path);
 
 - CPU 进入内核，调用 `kernel/syscall.c` 中的 `syscall()` 函数
 - 根据 `a7` 查表，找到 `kernel/sysproc.c` 中的 `sys_interpose()` 函数
+
+## Sandbox with allowed pathnames
+
+**实验目标：**
+
+给 `interpose` 添加一个白名单路径，禁用系统调用的同时还会判断，如果被禁用的是 `open` 或 `exec` 且在白名单路径中，就放行给定路径。
+
+**前置知识：**
+
+xv6 自带一些类似于标准库的函数，声明在 `kernel/defs.h` 中。  
+本次实验主要用到两个字符串操作：
+
+```c
+char* safestrcpy(char*, const char*, int);
+int strncmp(const char*, const char*, uint);
+```
+
+**实验步骤：**
+
+- 在 `kernel/proc.h` 中给 `struct proc` 添加新成员
+
+```c
+char allowed_path[MAXPATH];
+```
+
+- 在 `kernel/sysproc.c` 中修改 `sys_interpose()` 函数
+
+```c
+argstr(1, buf, MAXPATH);
+safestrcpy(myproc()->allowed_path, buf, sizeof(buf));  
+```
+
+- 在 `kernel/proc.c` 中写入白名单路径
+
+```c
+p->allowed_path[0] = '\0';
+safestrcpy(np->allowed_path, p->allowed_path, sizeof(p->allowed_path));
+```
+
+- 在 `kernel/syscall.c` 中完善判断机制
+
+```c
+char path[MAXPATH];
+argstr(0, path, MAXPATH);
+
+if (num > 0 && num < 64 && (p->syscall_mask & (1ULL << num)))
+{
+   if (!((num == SYS_exec || num == SYS_open) && (strncmp(path, p-                  >allowed_path, sizeof(p->allowed_path)) == 0)))
+   {
+     p->trapframe->a0 = -1;
+     return;
+   }
+}
+```
+
+- 测评
+
+```bash
+./grade-lab-syscall sandbox_path
+```
+
+- 提交
+
+```bash
+git commit -am "syscall: interpose path whitelist"
+```
